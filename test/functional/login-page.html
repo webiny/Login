@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login page</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</head>
+<body>
+
+<form action="">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username"/>
+    </div>
+    <br/>
+    <div>
+        <label for="password">Password:</label>
+        <input type="text" name="password" id="password"/>
+    </div>
+</form>
+<button onclick="submitLogin()">Submit</button>
+
+<hr/>
+<strong>Debug result</strong><br/>
+<div>
+    <pre id="debug-result"></pre>
+</div>
+
+<script>
+    function submitLogin()
+    {
+        alert('submitted');
+    }
+</script>
+
+</body>
+</html>

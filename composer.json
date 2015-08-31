@@ -1,0 +1,41 @@
+{
+    "name": "webiny/login",
+    "type": "app",
+    "description": "Login application that uses Webiny Framework Security component.",
+    "keywords": [
+        "login",
+        "authorization",
+        "authentication"
+    ],
+    "homepage": "http://www.webiny.com/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sven Al Hamad",
+            "email": "sven@webiny.com"
+        },
+        {
+            "name": "Pavel Denisjuk",
+            "email": "pavel@webiny.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.5.9",
+        "webiny/framework": "~1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4",
+        "mybuilder/phpunit-accelerator": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Webiny\\Login\\": "src/Webiny/Login/"
+        }
+    },
+    "extras": {
+        "branch-alias": {
+            "dev-master": "master-dev"
+        }
+    }
+}

@@ -1,0 +1,10 @@
+Mongo:
+    Services:
+        LoginFoo:
+            Class: \Webiny\Component\Mongo\Mongo
+            Arguments:
+                Host: 127.0.0.1:27017
+                Database: LoginFoo
+                Username: null
+                Password: null
+                CollectionPrefix: ''

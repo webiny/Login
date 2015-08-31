@@ -1,0 +1,21 @@
+Security:
+    Encoders:
+        NullEncoder:
+            Driver: \Webiny\Component\Security\Encoder\Drivers\Null
+    Tokens:
+        Stateless:
+            StorageDriver: \Webiny\Component\Security\Token\Storage\Stateless # storage driver needs to be set to stateless
+            SecurityKey: SecretKey
+    UserProviders:
+        Memory:
+            john: {password: secret, roles: 'ROLE_USER'}
+            admin: {password: login123, roles: 'ROLE_SUPERADMIN'}
+    Firewalls:
+        Admin:
+            RealmName: Administration
+            Anonymous: true
+            RememberMe: true
+            Token: Stateless
+            Encoder: NullEncoder
+            UserProviders: [Memory]
+            AuthenticationProviders: [Form]

@@ -1,0 +1,46 @@
+Todo:
+- add blacklist all option
+
+
+you cannot steal cookies (is SSL is used), so generate a unique ID for every device and return that
+together with the token, when validating, the device needs to provide both the device id and token
+This prevents, that is somebody steals your username/password, they still cannot enter your account,
+because they need to authorize their device via 2-factor auth and they cannot steal your device unique
+id, because they cannot steal cookies overall
+
+- device token should still contain browser name (without version), os name, language
+
+
+- we generate a unique device token and a device fingerprint
+- the token is provided back to the user
+- when a user presents a token, we generate the fingerprint and check that it matches the token
+
+
+worst case scenario - device not allowed
+
+// 1. request -> login successful, but device not allowed
+$login = new Login($sec, $conf);
+$user = $login->processLogin($username, $deviceTokenFromCookie/orEmpty); -> exception: device is not allowed
+$authToken = $login->getAuthToken(); -> store this somewhere for later
+
+// 2. request -> getting the device auth token
+$login = new Login($sec, $conf);
+$deviceValidationToken = $login->generateDeviceConfirmationToken($username);
+(email/sms the token to the user)
+
+// 3. request -> validating the device
+$login = new Login($sec, $conf);
+$deviceToken = $login->validateDeviceConfirmationToken($username, $deviceValidationToken); -> if false, you need to request a new token
+(store the device token into cookie, or whatever)
+$user = $login->getUser($authToken, $deviceToken); => note: this bypassed some of the internal methods of the processLogin
+
+worst case scenario - user account not confirmed
+
+// 1. request -> login successful, but account is not confirmed
+$login = new Login($sec, $conf);
+$login->processLogin($username); -> exception: account not confirmed
+$accountConfToken = $login->getAccountConfirmationToken($username); // we need to provide username
+
+// 2. request
+$login = new Login($sec, $conf);
+$login->validateAccountConfirmationToken($accountConfToken); // redirect to login page
