@@ -126,17 +126,14 @@ The method takes the following parameters via POST:
 - deviceToken (optional - required only if 2FactorAuth is turned on)
 
 Login error codes:
-1. Rate limit reached.
 
-2. User account is blocked.
+- 1. Rate limit reached.
+- 2. User account is blocked.
+- 3. Invalid credentials.
+- 4. User hasn't confirmed his account.
+- 5. The current device is not on the allowed list.
+- 99. Either username or password is missing.
 
-3. Invalid credentials.
-
-4. User hasn't confirmed his account.
-
-5. The current device is not on the allowed list.
-
-99. Either username or password is missing.
 
 ### POST `getDeviceValidationToken`
 
@@ -147,6 +144,7 @@ The device validation token is something that can be emailed or sent to the user
 The method takes the following parameters via POST:
 - username
 
+
 ### POST `validateDeviceValidationToken`
 
 Validates the provided `deviceValidationToken` for the given username. If the token matches, `deviceToken` is returned.
@@ -156,6 +154,7 @@ The method takes the following parameters via POST:
 - username
 - deviceValidationToken
 
+
 ### POST `getAccountActivationToken`
 
 In case users account is not activated, you need to request an activation token.
@@ -163,6 +162,7 @@ Usually this token is then emailed to the user via an activation link.
 
 The method takes the following parameters via POST:
 - username
+
 
 ### POST `validateAccountActivationToken`
 
@@ -172,6 +172,7 @@ The method takes the following parameters via POST:
 - username
 - accountActivationToken
 
+
 ### POST `logout`
 
 Invalidates the provided auth token for the given user.
@@ -179,6 +180,7 @@ Invalidates the provided auth token for the given user.
 The method takes the following parameters via POST:
 - username
 - authToken (the auth token returned by processLogin)
+
 
 ### POST `generateForgotPasswordResetToken`
 
