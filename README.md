@@ -95,6 +95,20 @@ if ($authCookie && $deviceToken) {
 }
 ```
 
+### Security setup
+
+Note that the Security component needs to implement `Stateless` token storage:
+
+```yaml
+Security:
+    Tokens:
+        Stateless:
+            StorageDriver: \Webiny\Component\Security\Token\Storage\Stateless # storage driver needs to be set to stateless
+            SecurityKey: SecretKey
+    Firewall:
+        Admin:
+            Token: Stateless
+```
 
 ## Login services
 
@@ -167,3 +181,13 @@ Generates a forgot password link for the given username.
 
 The method takes the following parameters via POST:
 - username
+
+
+## What doesn't it do
+
+The Login app doesn't: 
+- store any cookies or sessions, so all `remember me` features need to be done on your end
+- it doesn't need to know about your users passwords, this is done via the `Security` class
+- doesn't email any links like forgot password, activate account, 2FA tokens - login only generates the tokens, the delivery is up to you
+- doesn't do any authorization, only authentication
+- doesn't provide any visuals, only a class and a RESTful service
