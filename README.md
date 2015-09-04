@@ -1,7 +1,7 @@
 Webiny Login
 ================
 
-This is a application that provides additional control layer to the `Webiny Framework Security` component.
+This is an application that provides additional control layer to the [Webiny Framework Security](https://github.com/Webiny/Security) component.
 The application standardizes the login process and user stateless token storage, making it ideal for RESTful and mobile applications.
 
 Some of the built-in features:
@@ -18,7 +18,7 @@ Some of the built-in features:
 Login:
     SecurityFirewall: Admin
     2FactorAuth: true
-    BlockTreshold: 6
+    BlockThreshold: 6
     BlockTimelimit: 10
     SessionTtl: 30
     DeviceTtl: 90
@@ -31,9 +31,9 @@ Login:
 ```
 
 - **SecurityFirewall**: defines which `Security.Firewall` to use for user authentication
-- **2FactorAuth**: do you want to user 2 factor auth or not
-- **BlockTreshold**: after how many bad login attempts should be block the client from login page (client is identified as username+ip combination)
-- **BlockTimelimit**: how many minutes should the client be blocked for submitting any additional login attempts
+- **2FactorAuth**: should the 2 factor auth be used or not
+- **BlockThreshold**: after how many bad login attempts should the client be blocked from submitting any new login requests (client is identified as username+ip combination)
+- **BlockTimelimit**: for how many minutes should the client be blocked from submitting any additional login attempts
 - **SessionTtl**: once session has been issued, for how long should it be considered valid
 - **DeviceTtl**: how long should the device session be valid (used only if 2FactorAuth is turned on)
 - **RateLimitBlacklist**: list of IPs that are permanently blocked from submitting login requests
@@ -42,13 +42,13 @@ Login:
 ## Setup
 
 The Login app requires following Webiny Framework components:
-- Entity
-- Http
-- Mongo
-- Security
-- Rest (optional - only if login RESTful service is used)
+- [Entity](https://github.com/Webiny/Entit)
+- [Http](https://github.com/Webiny/Http)
+- [Mongo](https://github.com/Webiny/Mongo)
+- [Security](https://github.com/Webiny/Security)
+- [Rest](https://github.com/Webiny/Rest) (optional - only if login RESTful service is used)
 
-Example setup:
+#### Example setup:
 
 ```php
 \Webiny\Component\Security\Security::setConfig('./securityConfig.yaml');
@@ -95,7 +95,7 @@ if ($authCookie && $deviceToken) {
 }
 ```
 
-### Security setup
+#### Security setup
 
 Note that the Security component needs to implement `Stateless` token storage:
 
@@ -112,7 +112,7 @@ Security:
 
 ## Login services
 
-You can use the Login app as RESTful service by extending the `\Webiny\Login\LoginServices` abstract class and implementing 
+You can use the Login app as a RESTful service by extending the `\Webiny\Login\LoginServices` abstract class and implementing 
 it into `Webiny Framework Rest` component. (view the `app/services.php` folder for sample implementation)
 
 ### POST `processLogin`
@@ -126,12 +126,17 @@ The method takes the following parameters via POST:
 - deviceToken (optional - required only if 2FactorAuth is turned on)
 
 Login error codes:
-1 - Rate limit reached.
-2 - User account is blocked.
-3 - Invalid credentials.
-4 - User hasn't confirmed his account.
-5 - The current device is not on the allowed list.
-99 - Either username or password is missing.
+1. Rate limit reached.
+
+2. User account is blocked.
+
+3. Invalid credentials.
+
+4. User hasn't confirmed his account.
+
+5. The current device is not on the allowed list.
+
+99. Either username or password is missing.
 
 ### POST `getDeviceValidationToken`
 
