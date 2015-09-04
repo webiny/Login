@@ -1,7 +1,7 @@
 Login:
     SecurityFirewall: Admin
     2FactorAuth: true # is 2 factor auth on or off
-    BlockTreshold: 6 # after how many attempts should be block the login for that (ip+username) combination
+    BlockThreshold: 6 # after how many attempts should be block the login for that (ip+username) combination
     BlockTimelimit: 10 # when user hits the block treshold, how many minutes for should he be blocked
     SessionTtl: 30 # session TTL in days
     DeviceTtl: 90

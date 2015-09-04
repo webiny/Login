@@ -46,11 +46,11 @@ abstract class LoginServices
         $deviceToken = $this->httpRequest()->post('deviceToken', '');
 
         if (!$username) {
-            throw new RestErrorException('Login error', 'Username is required.');
+            throw new RestErrorException('Login error', 'Username is required.', 99);
         }
 
         if (!$password) {
-            throw new RestErrorException('Login error', 'Password is required.');
+            throw new RestErrorException('Login error', 'Password is required.', 99);
         }
 
         // check if 2fa is turned on
@@ -72,8 +72,7 @@ abstract class LoginServices
         } catch (LoginException $le) {
             throw new RestErrorException('Login error', $le->getMessage(), $le->getCode());
         } catch (\Exception $e) {
-            //throw new RestErrorException('Login error', $e->getMessage());
-            die(print_r($e)); //todo: remove this
+            throw new RestErrorException('Login error', $e->getMessage());
         }
     }
 

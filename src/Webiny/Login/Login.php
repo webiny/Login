@@ -99,7 +99,7 @@ class Login
             return true;
         }
 
-        $rateLimit = $this->config->get('Login.RateLimit', 0);
+        $rateLimit = $this->config->get('Login.BlockThreshold', 0);
         if ($rateLimit < 1) {
             return false; // rate limit not used
         }
@@ -110,7 +110,8 @@ class Login
             return false;
         }
 
-        if ((time() - $rc[0]['timestamp']) > 60) {
+        $blockTtl = $this->config->get('Login.BlockTimelimit', 1) * 60; // defined in minutes, cast to seconds
+        if ((time() - $blockTtl) > 60) {
             return false;
         }
 
