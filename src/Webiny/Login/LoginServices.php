@@ -54,7 +54,7 @@ abstract class LoginServices
         }
 
         // check if 2fa is turned on
-        if (!$this->getLoginInstance()->getConfig()->get('Login.2FactorAuth', false) && $deviceToken == '') {
+        if ($this->getLoginInstance()->getConfig()->get('Login.2FactorAuth', false) == true && $deviceToken == '') {
             // we need to have device token
             throw new RestErrorException('Login error', 'The current device is not on the allowed list.', 5);
         }

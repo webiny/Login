@@ -6,10 +6,12 @@ $authCookie = \Webiny\Component\Http\Cookie::getInstance()->get('auth-token');
 $deviceToken = \Webiny\Component\Http\Cookie::getInstance()->get('device-token');
 
 $msg = '';
-if ($authCookie && $deviceToken) {
+if ($authCookie) {
     try {
         $user = $login->getUser($authCookie, $deviceToken);
-        die('You are logged in');
+        if($user){
+            die('You are logged in');
+        }
     } catch (\Webiny\Login\LoginException $le) {
         $msg = $le->getMessage();
         die(print_r($le));
@@ -113,7 +115,7 @@ if ($authCookie && $deviceToken) {
 
 <script type="text/javascript">
 
-    domain = 'http://api.test.app:8000';
+    domain = 'http://api.test.app:'+location.port;
 
     function submitLogin() {
 

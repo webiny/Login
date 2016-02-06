@@ -777,8 +777,8 @@ class Login
     private function storeUserSession($session)
     {
         // get all sessions
-        $sessions = $this->getMeta()->sessions;
-        if (!is_array($session)) {
+        $sessions = $this->getMeta()->sessions->val();
+        if (!is_array($sessions)) {
             $sessions = [];
         }
 

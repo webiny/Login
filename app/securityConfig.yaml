@@ -16,6 +16,6 @@ Security:
             Anonymous: true
             RememberMe: true
             Token: Stateless
-            Encoder: NullEncoder
+            Encoder: Plain
             UserProviders: [Memory]
             AuthenticationProviders: [Form]
