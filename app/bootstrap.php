@@ -9,5 +9,5 @@ require_once '../vendor/autoload.php';
 $security = \Webiny\Component\Security\Security::getInstance();
 $loginConfig = \Webiny\Component\Config\Config::getInstance()->yaml('./loginConfig.yaml');
 
-$login = new \Webiny\Login\Login($security, $loginConfig);
+$login = new \Webiny\Login\Login($security, $loginConfig->get('Login'));
 

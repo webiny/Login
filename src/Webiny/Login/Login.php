@@ -79,9 +79,9 @@ class Login
         $this->config = $config;
 
         // extract the firewall from the config
-        $this->fwName = $this->config->get('Login.SecurityFirewall', false);
+        $this->fwName = $this->config->get('SecurityFirewall', false);
         if (!$this->fwName) {
-            throw new LoginException("Login.SecurityFirewall must be defined inside the login configuration.");
+            throw new LoginException("SecurityFirewall must be defined inside the login configuration.");
         }
         $this->ip = $this->httpRequest()->getClientIp();
     }
@@ -99,7 +99,7 @@ class Login
             return true;
         }
 
-        $rateLimit = $this->config->get('Login.BlockThreshold', 0);
+        $rateLimit = $this->config->get('BlockThreshold', 0);
         if ($rateLimit < 1) {
             return false; // rate limit not used
         }
@@ -110,7 +110,7 @@ class Login
             return false;
         }
 
-        $blockTtl = $this->config->get('Login.BlockTimelimit', 1) * 60; // defined in minutes, cast to seconds
+        $blockTtl = $this->config->get('BlockTimelimit', 1) * 60; // defined in minutes, cast to seconds
         if ((time() - $blockTtl) > 60) {
             return false;
         }
@@ -462,7 +462,7 @@ class Login
         }
 
         // validate device allowed list
-        if ($this->config->get('Login.2FactorAuth', true)) {
+        if ($this->config->get('2FactorAuth', true)) {
             // validate the device
             if (!$this->isDeviceSessionValid($deviceToken)) {
                 $this->security->firewall($this->fwName)->processLogout();
@@ -514,7 +514,7 @@ class Login
             $this->security->firewall($this->fwName)->processLogout();
             throw new LoginException('User hasn\'t confirmed his account.', 4);
         }
-        if ($this->config->get('Login.2FactorAuth', true)) {
+        if ($this->config->get('2FactorAuth', true)) {
             // validate the device
             if (!$this->isDeviceSessionValid($deviceToken)) {
                 $this->security->firewall($this->fwName)->processLogout();
@@ -641,12 +641,12 @@ class Login
      */
     private function getMeta()
     {
-        if (is_object($this->meta)) {
-            return $this->meta;
-        }
-
         if (empty($this->username)) {
             throw new LoginException('Unable to load login meta because the username is not set.');
+        }
+
+        if (isset($this->meta[$this->username])) {
+            return $this->meta[$this->username];
         }
 
         $meta = LoginMetaEntity::findOne(['username' => $this->username]);
@@ -656,7 +656,7 @@ class Login
             $meta->username = $this->username;
         }
 
-        $this->meta = $meta;
+        $this->meta[$this->username] = $meta;
 
         return $meta;
     }
@@ -672,7 +672,7 @@ class Login
     private function isSessionValid($session)
     {
         $sessions = $this->getMeta()->sessions;
-        $sessionTtl = $this->config->get('Login.SessionTtl', $this->defaultSessionTtl);
+        $sessionTtl = $this->config->get('SessionTtl', $this->defaultSessionTtl);
 
         foreach ($sessions as $s) {
             if ($s['sid'] == $session && ($s['created'] + (86400 * $sessionTtl)) > time()) {
@@ -694,7 +694,7 @@ class Login
     private function isDeviceSessionValid($deviceToken)
     {
         $devices = $this->getMeta()->allowedDevices;
-        $deviceTtl = $this->config->get('Login.DeviceTtl', $this->defaultDeviceTtl);
+        $deviceTtl = $this->config->get('DeviceTtl', $this->defaultDeviceTtl);
 
         $currentDeviceFingerprint = $this->getDeviceFingerprint();
 
@@ -744,7 +744,7 @@ class Login
      */
     private function isIpWhitelisted()
     {
-        $whitelist = $this->config->get('Login.RateLimitWhitelist', [], true);
+        $whitelist = $this->config->get('RateLimitWhitelist', [], true);
         if (in_array($this->ip, $whitelist)) {
             return true;
         }
@@ -759,7 +759,7 @@ class Login
      */
     private function isIpBlacklisted()
     {
-        $blacklist = $this->config->get('Login.RateLimitBlacklist', [], true);
+        $blacklist = $this->config->get('RateLimitBlacklist', [], true);
         if (in_array($this->ip, $blacklist)) {
             return true;
         }
@@ -784,7 +784,7 @@ class Login
 
         // delete the old sessions
         $newSessions = [];
-        $ttl = $this->config->get('Login.SessionTtl', $this->defaultSessionTtl);
+        $ttl = $this->config->get('SessionTtl', $this->defaultSessionTtl);
         foreach ($sessions as $s) {
             if (($s['created'] + ($ttl * 86400)) > time()) {
                 $newSessions[] = $s;
