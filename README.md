@@ -48,6 +48,15 @@ The Login app requires following Webiny Framework components:
 - [Security](https://github.com/Webiny/Security)
 - [Rest](https://github.com/Webiny/Rest) (optional - only if login RESTful service is used)
 
+## Mongo Indexes
+
+Create the following indexes on your Mongo Database:
+
+```json
+db.getCollection('LoginMeta').createIndex({username: 1});
+db.getCollection('LoginRateControl').createIndex({ip: 1});
+```
+
 #### Example setup:
 
 ```php
