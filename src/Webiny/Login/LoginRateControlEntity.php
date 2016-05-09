@@ -12,24 +12,13 @@ namespace Webiny\Login;
  */
 class LoginRateControlEntity extends \Webiny\Component\Entity\EntityAbstract
 {
-    protected static $entityCollection = "LoginRateControl";
+    protected static $entityCollection = 'LoginRateControl';
 
-    /**
-     * This method is called during instantiation to build entity structure
-     * @return void
-     */
-    protected function entityStructure()
+    function __construct()
     {
-        /*
-        {
-            "ip": 123,
-            "timestamp": 10123123,
-            "username": john
-        }
-        */
-
-        $this->attr("ip")->char()
-            ->attr("timestamp")->integer()->setDefaultValue(0)
-            ->attr("username")->char();
+        parent::__construct();
+        $this->attr('ip')->char();
+        $this->attr('timestamp')->integer()->setDefaultValue(0);
+        $this->attr('username')->char();
     }
 }
