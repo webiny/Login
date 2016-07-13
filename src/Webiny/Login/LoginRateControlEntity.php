@@ -10,7 +10,7 @@ namespace Webiny\Login;
  * Class LoginRateControlEntity
  * @package Webiny\Login
  */
-class LoginRateControlEntity extends \Webiny\Component\Entity\EntityAbstract
+class LoginRateControlEntity extends \Webiny\Component\Entity\AbstractEntity
 {
     protected static $entityCollection = 'LoginRateControl';
 

@@ -10,7 +10,7 @@ namespace Webiny\Login;
  * Class LoginSessionEntity
  * @package Webiny\Login
  */
-class LoginMetaEntity extends \Webiny\Component\Entity\EntityAbstract
+class LoginMetaEntity extends \Webiny\Component\Entity\AbstractEntity
 {
     protected static $entityCollection = 'LoginMeta';
 

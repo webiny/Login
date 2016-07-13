@@ -636,7 +636,7 @@ class Login
     /**
      * Returns the login meta (username based).
      *
-     * @return null|\Webiny\Component\Entity\EntityAbstract|LoginRateControlEntity
+     * @return null|\Webiny\Component\Entity\AbstractEntity|LoginRateControlEntity
      * @throws LoginException
      */
     private function getMeta()
