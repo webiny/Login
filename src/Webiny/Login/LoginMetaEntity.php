@@ -7,7 +7,6 @@
 
 namespace Webiny\Login;
 
-use ArrayObject;
 use Webiny\Component\Entity\AbstractEntity;
 use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 
