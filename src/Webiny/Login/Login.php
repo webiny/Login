@@ -480,6 +480,18 @@ class Login
         return $result;
     }
 
+    public function processUsernameChange($oldUsername, $newUsername)
+    {
+        /* @var LoginMetaEntity $meta */
+        $meta = LoginMetaEntity::findOne(['username' => $oldUsername]);
+        if (!$meta) {
+            throw new LoginException('Cannot change username because it does not exist.');
+        }
+
+        $meta->username = $newUsername;
+        $meta->save();
+    }
+
     /**
      * Returns User object for the provided auth token and device token.
      * If user is not found, or session is invalid, an exception is thrown.
