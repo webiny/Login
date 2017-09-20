@@ -20,7 +20,6 @@ Login:
     2FactorAuth: true
     BlockThreshold: 6
     BlockTimelimit: 10
-    SessionTtl: 30
     DeviceTtl: 90
     RateLimitBlacklist:
         - 123.123.123.123
@@ -34,7 +33,6 @@ Login:
 - **2FactorAuth**: should the 2 factor auth be used or not
 - **BlockThreshold**: after how many bad login attempts should the client be blocked from submitting any new login requests (client is identified as username+ip combination)
 - **BlockTimelimit**: for how many minutes should the client be blocked from submitting any additional login attempts
-- **SessionTtl**: once session has been issued, for how long should it be considered valid
 - **DeviceTtl**: how long should the device session be valid (used only if 2FactorAuth is turned on)
 - **RateLimitBlacklist**: list of IPs that are permanently blocked from submitting login requests
 - **RateLimitWhitelist**: list of IPs that are excluded from the rate limit control

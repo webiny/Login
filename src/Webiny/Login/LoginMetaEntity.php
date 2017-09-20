@@ -12,7 +12,6 @@ use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 
 /**
  * Class LoginSessionEntity
- * @package Webiny\Login
  *
  * @property string      $username
  * @property ArrayObject $previousUsernames
@@ -27,7 +26,7 @@ use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
  */
 class LoginMetaEntity extends AbstractEntity
 {
-    protected static $entityCollection = 'LoginMeta';
+    protected static $collection = 'LoginMeta';
 
     function __construct()
     {
@@ -36,10 +35,11 @@ class LoginMetaEntity extends AbstractEntity
             $changed = $this->username != $value;
             if ($changed) {
                 $this->previousUsernames[] = [
-                    'username'   => $this->username,
+                    'username' => $this->username,
                     'modified' => time()
                 ];
             }
+
             return $value;
         });
 

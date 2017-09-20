@@ -23,10 +23,6 @@ class Login
     use HttpTrait, CryptTrait, SecurityTrait;
 
     /**
-     * @var int default session ttl - used if session ttl is not defined inside login config
-     */
-    private $defaultSessionTtl = 30; // in days
-    /**
      * @var int default device ttl - used if device ttl is not defined inside login config
      */
     private $defaultDeviceTtl = 60; // in days
@@ -271,14 +267,14 @@ class Login
      *
      * @param string $username
      *
-     * @return \Webiny\Component\Entity\Attribute\AttributeAbstract
+     * @return boolean
      * @throws LoginException
      */
     public function isAccountActive($username)
     {
         $this->username = $username;
 
-        return $this->getMeta()->confirmed;
+        return boolval($this->getMeta()->confirmed);
     }
 
     /**
@@ -286,14 +282,14 @@ class Login
      *
      * @param string $username
      *
-     * @return \Webiny\Component\Entity\Attribute\AttributeAbstract
+     * @return boolean
      * @throws LoginException
      */
     public function isAccountBlocked($username)
     {
         $this->username = $username;
 
-        return $this->getMeta()->blocked;
+        return boolval($this->getMeta()->blocked);
     }
 
     /**
@@ -499,7 +495,7 @@ class Login
      * @param $authToken
      * @param $deviceToken
      *
-     * @return bool|\Webiny\Component\Security\User\UserAbstract
+     * @return bool|\Webiny\Component\Security\User\AbstractUser
      * @throws LoginException
      * @throws \Webiny\Component\Security\Authentication\FirewallException
      * @throws \Webiny\Component\Security\SecurityException
@@ -648,7 +644,7 @@ class Login
     /**
      * Returns the login meta (username based).
      *
-     * @return null|\Webiny\Component\Entity\AbstractEntity|LoginRateControlEntity
+     * @return LoginMetaEntity
      * @throws LoginException
      */
     private function getMeta()
@@ -661,6 +657,7 @@ class Login
             return $this->meta[$this->username];
         }
 
+        /* @var $meta LoginMetaEntity */
         $meta = LoginMetaEntity::findOne(['username' => $this->username]);
 
         if (!$meta) {
@@ -684,10 +681,10 @@ class Login
     private function isSessionValid($session)
     {
         $sessions = $this->getMeta()->sessions;
-        $sessionTtl = $this->config->get('SessionTtl', $this->defaultSessionTtl);
+        $sessionTtl = $this->getSessionTtl();
 
         foreach ($sessions as $s) {
-            if ($s['sid'] == $session && ($s['created'] + (86400 * $sessionTtl)) > time()) {
+            if ($s['sid'] == $session && ($s['created'] + $sessionTtl) > time()) {
                 return true;
             }
         }
@@ -796,9 +793,9 @@ class Login
 
         // delete the old sessions
         $newSessions = [];
-        $ttl = $this->config->get('SessionTtl', $this->defaultSessionTtl);
+        $ttl = $this->getSessionTtl();
         foreach ($sessions as $s) {
-            if (($s['created'] + ($ttl * 86400)) > time()) {
+            if (($s['created'] + $ttl) > time()) {
                 $newSessions[] = $s;
             }
         }
@@ -815,5 +812,14 @@ class Login
         // update the entity
         $this->getMeta()->sessions = $newSessions;
         $this->getMeta()->save();
+    }
+
+    /**
+     * Get session ttl in seconds
+     * @return int
+     */
+    private function getSessionTtl()
+    {
+        return $this->security->firewall($this->fwName)->getToken()->getTtl();
     }
 }

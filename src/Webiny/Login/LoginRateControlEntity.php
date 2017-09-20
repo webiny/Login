@@ -11,7 +11,6 @@ use Webiny\Component\Entity\AbstractEntity;
 
 /**
  * Class LoginRateControlEntity
- * @package Webiny\Login
  *
  * @property string $ip
  * @property int    $timestamp
@@ -19,7 +18,7 @@ use Webiny\Component\Entity\AbstractEntity;
  */
 class LoginRateControlEntity extends AbstractEntity
 {
-    protected static $entityCollection = 'LoginRateControl';
+    protected static $collection = 'LoginRateControl';
 
     function __construct()
     {
