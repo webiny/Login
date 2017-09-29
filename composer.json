@@ -21,8 +21,8 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=5.5.9",
-        "webiny/framework": "dev-master"
+        "php": ">=7.0",
+        "webiny/framework": "~1.6 || dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "~4",
