@@ -10,8 +10,10 @@ namespace Webiny\Login;
 use Webiny\Component\Config\ConfigObject;
 use Webiny\Component\Crypt\CryptTrait;
 use Webiny\Component\Http\HttpTrait;
+use Webiny\Component\Security\Authentication\FirewallException;
 use Webiny\Component\Security\Security;
 use Webiny\Component\Security\SecurityTrait;
+use Webiny\Component\Security\Token\TokenException;
 
 /**
  * Login class holds all the login logic.
@@ -502,9 +504,17 @@ class Login
      */
     public function getUser($authToken, $deviceToken = '')
     {
+        $user = null;
         // 1. get user from firewall
         $this->security($this->fwName)->getToken()->setTokenString($authToken);
-        $user = $this->security($this->fwName)->getUser();
+
+        try {
+            $user = $this->security($this->fwName)->getUser();
+        } catch (TokenException $e) {
+            if ($e->getCode() === TokenException::TOKEN_EXPIRED) {
+                throw new LoginException('The current auth session is no longer valid.', 7);
+            }
+        }
 
         if (!$user->isAuthenticated()) {
             throw new LoginException('User is not authenticated', 6);
