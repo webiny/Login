@@ -460,7 +460,7 @@ class Login
         }
 
         // validate device allowed list
-        if ($this->config->get('2FactorAuth', true)) {
+        if ($this->config->get('ValidateDevice', false)) {
             // validate the device
             if (!$this->isDeviceSessionValid($deviceToken)) {
                 $this->security->firewall($this->fwName)->processLogout();
@@ -532,7 +532,7 @@ class Login
             $this->security->firewall($this->fwName)->processLogout();
             throw new LoginException('User hasn\'t confirmed his account.', 4);
         }
-        if ($this->config->get('2FactorAuth', true)) {
+        if ($this->config->get('ValidateDevice', false)) {
             // validate the device
             if (!$this->isDeviceSessionValid($deviceToken)) {
                 $this->security->firewall($this->fwName)->processLogout();

@@ -5,19 +5,19 @@ This is an application that provides additional control layer to the [Webiny Fra
 The application standardizes the login process and user stateless token storage, making it ideal for RESTful and mobile applications.
 
 Some of the built-in features:
-- 2 factor authentication
 - sessions are stored in database and can be revoked at any point
 - authorized devices are also stored in database and can be revoked at any point
 - login whitelist and blacklist based on client IP
 - rate limit control
 - stateless login validation for RESTful application
+- only whitelisted devices can log-in (optional)
 
 ## Sample config
 
 ```yaml
 Login:
     SecurityFirewall: Admin
-    2FactorAuth: true
+    ValidateDevice: true
     BlockThreshold: 6
     BlockTimelimit: 10
     DeviceTtl: 90
@@ -30,10 +30,10 @@ Login:
 ```
 
 - **SecurityFirewall**: defines which `Security.Firewall` to use for user authentication
-- **2FactorAuth**: should the 2 factor auth be used or not
+- **ValidateDevice**: does the device need to be whitelisted before user can login
 - **BlockThreshold**: after how many bad login attempts should the client be blocked from submitting any new login requests (client is identified as username+ip combination)
 - **BlockTimelimit**: for how many minutes should the client be blocked from submitting any additional login attempts
-- **DeviceTtl**: how long should the device session be valid (used only if 2FactorAuth is turned on)
+- **DeviceTtl**: how long should the device session be valid (used only if ValidateDevice is turned on)
 - **RateLimitBlacklist**: list of IPs that are permanently blocked from submitting login requests
 - **RateLimitWhitelist**: list of IPs that are excluded from the rate limit control
 
@@ -130,7 +130,7 @@ The method takes the following parameters via POST:
 - username
 - password
 - authProvider (optional - defines the name of auth provider inside `Security.Firewall` that should be used to process the request)
-- deviceToken (optional - required only if 2FactorAuth is turned on)
+- deviceToken (optional - required only if ValidateDevice is turned on)
 
 Login error codes:
 
@@ -155,7 +155,7 @@ The method takes the following parameters via POST:
 ### POST `validateDeviceValidationToken`
 
 Validates the provided `deviceValidationToken` for the given username. If the token matches, `deviceToken` is returned.
-This device token needs to be provided to the `processLogin` method in order to pass the 2FactorAuth.
+This device token needs to be provided to the `processLogin` method in order to pass the ValidateDevice.
 
 The method takes the following parameters via POST:
 - username

@@ -1,8 +1,8 @@
 Login:
     SecurityFirewall: Admin
-    2FactorAuth: true # is 2 factor auth on or off
+    ValidateDevice: true # only whitelisted devices are allowed
     BlockThreshold: 6 # after how many attempts should be block the login for that (ip+username) combination
-    BlockTimelimit: 10 # when user hits the block treshold, how many minutes for should he be blocked
+    BlockTimelimit: 10 # when user hits the block threshold, how many minutes for should he be blocked
     SessionTtl: 30 # session TTL in days
     DeviceTtl: 90
     RateLimit: 10 # number of login attempts within 60 seconds from a single IP
